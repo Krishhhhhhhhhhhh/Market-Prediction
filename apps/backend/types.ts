@@ -3,7 +3,7 @@ import { z } from "zod";
 // price is in cents (1-99): a full $1 share-pair = 100 cents, matching
 // the split/merge economics below. qty is always a positive integer share count.
 export const TradeSchema = z.object({
-  marketId: z.string().uuid(),
+  marketId: z.string().uuid(),  
   side: z.enum(["yes", "no"]),
   price: z.number().int().min(1).max(99), // 10 => $0.10
   qty: z.number().int().positive(), // 10 => 10 shares

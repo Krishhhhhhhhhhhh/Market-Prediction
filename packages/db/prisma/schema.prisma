@@ -1,8 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
   provider = "prisma-client"
   output   = "../generated/prisma"
@@ -11,27 +6,28 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
 model User {
-  id         String          @id @default(uuid())
-  address    String          @unique
-  usdBalance Int             @default(0)
-  positions  Position[]
+  id         String         @id @default(uuid())
+  address    String         @unique
+  usdBalance Int            @default(0)
   orders     OrderHistory[]
+  positions  Position[]
 
   @@index([address])
 }
 
 model Market {
-  id                     String         @id @default(uuid())
-  title                  String
-  description            String
-  resolutionDescription  String
-  yesOrderbook           Json
-  noOrderbook            Json
-  totalQty               Int            @default(0)
-  positions              Position[]
-  orders                 OrderHistory[]
-  resolution             PositionType?
+  id                    String         @id @default(uuid())
+  title                 String
+  description           String
+  resolutionDescription String
+  yesOrderbook          Json
+  noOrderbook           Json
+  totalQty              Int            @default(0)
+  resolution            PositionType?
+  orders                OrderHistory[]
+  positions             Position[]
 }
 
 model Position {
@@ -39,9 +35,9 @@ model Position {
   userId   String
   marketId String
   type     PositionType
-  user     User         @relation(fields: [userId], references: [id])
-  market   Market       @relation(fields: [marketId], references: [id])
   qty      Int
+  market   Market       @relation(fields: [marketId], references: [id])
+  user     User         @relation(fields: [userId], references: [id])
 
   @@unique([userId, marketId, type])
   @@index([marketId])
@@ -54,9 +50,9 @@ model OrderHistory {
   price     Int
   userId    String
   marketId  String
-  user      User      @relation(fields: [userId], references: [id])
-  market    Market    @relation(fields: [marketId], references: [id])
   createdAt DateTime  @default(now())
+  market    Market    @relation(fields: [marketId], references: [id])
+  user      User      @relation(fields: [userId], references: [id])
 
   @@index([marketId])
 }

@@ -232,8 +232,8 @@ export type MarketWhereInput = {
   noOrderbook?: Prisma.JsonFilter<"Market">
   totalQty?: Prisma.IntFilter<"Market"> | number
   resolution?: Prisma.EnumPositionTypeNullableFilter<"Market"> | $Enums.PositionType | null
-  positions?: Prisma.PositionListRelationFilter
   orders?: Prisma.OrderHistoryListRelationFilter
+  positions?: Prisma.PositionListRelationFilter
 }
 
 export type MarketOrderByWithRelationInput = {
@@ -245,8 +245,8 @@ export type MarketOrderByWithRelationInput = {
   noOrderbook?: Prisma.SortOrder
   totalQty?: Prisma.SortOrder
   resolution?: Prisma.SortOrderInput | Prisma.SortOrder
-  positions?: Prisma.PositionOrderByRelationAggregateInput
   orders?: Prisma.OrderHistoryOrderByRelationAggregateInput
+  positions?: Prisma.PositionOrderByRelationAggregateInput
 }
 
 export type MarketWhereUniqueInput = Prisma.AtLeast<{
@@ -261,8 +261,8 @@ export type MarketWhereUniqueInput = Prisma.AtLeast<{
   noOrderbook?: Prisma.JsonFilter<"Market">
   totalQty?: Prisma.IntFilter<"Market"> | number
   resolution?: Prisma.EnumPositionTypeNullableFilter<"Market"> | $Enums.PositionType | null
-  positions?: Prisma.PositionListRelationFilter
   orders?: Prisma.OrderHistoryListRelationFilter
+  positions?: Prisma.PositionListRelationFilter
 }, "id">
 
 export type MarketOrderByWithAggregationInput = {
@@ -304,8 +304,8 @@ export type MarketCreateInput = {
   noOrderbook: Prisma.JsonNullValueInput | runtime.InputJsonValue
   totalQty?: number
   resolution?: $Enums.PositionType | null
-  positions?: Prisma.PositionCreateNestedManyWithoutMarketInput
   orders?: Prisma.OrderHistoryCreateNestedManyWithoutMarketInput
+  positions?: Prisma.PositionCreateNestedManyWithoutMarketInput
 }
 
 export type MarketUncheckedCreateInput = {
@@ -317,8 +317,8 @@ export type MarketUncheckedCreateInput = {
   noOrderbook: Prisma.JsonNullValueInput | runtime.InputJsonValue
   totalQty?: number
   resolution?: $Enums.PositionType | null
-  positions?: Prisma.PositionUncheckedCreateNestedManyWithoutMarketInput
   orders?: Prisma.OrderHistoryUncheckedCreateNestedManyWithoutMarketInput
+  positions?: Prisma.PositionUncheckedCreateNestedManyWithoutMarketInput
 }
 
 export type MarketUpdateInput = {
@@ -330,8 +330,8 @@ export type MarketUpdateInput = {
   noOrderbook?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   totalQty?: Prisma.IntFieldUpdateOperationsInput | number
   resolution?: Prisma.NullableEnumPositionTypeFieldUpdateOperationsInput | $Enums.PositionType | null
-  positions?: Prisma.PositionUpdateManyWithoutMarketNestedInput
   orders?: Prisma.OrderHistoryUpdateManyWithoutMarketNestedInput
+  positions?: Prisma.PositionUpdateManyWithoutMarketNestedInput
 }
 
 export type MarketUncheckedUpdateInput = {
@@ -343,8 +343,8 @@ export type MarketUncheckedUpdateInput = {
   noOrderbook?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   totalQty?: Prisma.IntFieldUpdateOperationsInput | number
   resolution?: Prisma.NullableEnumPositionTypeFieldUpdateOperationsInput | $Enums.PositionType | null
-  positions?: Prisma.PositionUncheckedUpdateManyWithoutMarketNestedInput
   orders?: Prisma.OrderHistoryUncheckedUpdateManyWithoutMarketNestedInput
+  positions?: Prisma.PositionUncheckedUpdateManyWithoutMarketNestedInput
 }
 
 export type MarketCreateManyInput = {
@@ -588,13 +588,13 @@ export type MarketUncheckedUpdateWithoutOrdersInput = {
  */
 
 export type MarketCountOutputType = {
-  positions: number
   orders: number
+  positions: number
 }
 
 export type MarketCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  positions?: boolean | MarketCountOutputTypeCountPositionsArgs
   orders?: boolean | MarketCountOutputTypeCountOrdersArgs
+  positions?: boolean | MarketCountOutputTypeCountPositionsArgs
 }
 
 /**
@@ -610,15 +610,15 @@ export type MarketCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Exten
 /**
  * MarketCountOutputType without action
  */
-export type MarketCountOutputTypeCountPositionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.PositionWhereInput
+export type MarketCountOutputTypeCountOrdersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.OrderHistoryWhereInput
 }
 
 /**
  * MarketCountOutputType without action
  */
-export type MarketCountOutputTypeCountOrdersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.OrderHistoryWhereInput
+export type MarketCountOutputTypeCountPositionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PositionWhereInput
 }
 
 
@@ -631,8 +631,8 @@ export type MarketSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   noOrderbook?: boolean
   totalQty?: boolean
   resolution?: boolean
-  positions?: boolean | Prisma.Market$positionsArgs<ExtArgs>
   orders?: boolean | Prisma.Market$ordersArgs<ExtArgs>
+  positions?: boolean | Prisma.Market$positionsArgs<ExtArgs>
   _count?: boolean | Prisma.MarketCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["market"]>
 
@@ -671,8 +671,8 @@ export type MarketSelectScalar = {
 
 export type MarketOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "description" | "resolutionDescription" | "yesOrderbook" | "noOrderbook" | "totalQty" | "resolution", ExtArgs["result"]["market"]>
 export type MarketInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  positions?: boolean | Prisma.Market$positionsArgs<ExtArgs>
   orders?: boolean | Prisma.Market$ordersArgs<ExtArgs>
+  positions?: boolean | Prisma.Market$positionsArgs<ExtArgs>
   _count?: boolean | Prisma.MarketCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type MarketIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -681,8 +681,8 @@ export type MarketIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
 export type $MarketPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Market"
   objects: {
-    positions: Prisma.$PositionPayload<ExtArgs>[]
     orders: Prisma.$OrderHistoryPayload<ExtArgs>[]
+    positions: Prisma.$PositionPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1087,8 +1087,8 @@ readonly fields: MarketFieldRefs;
  */
 export interface Prisma__MarketClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  positions<T extends Prisma.Market$positionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Market$positionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PositionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   orders<T extends Prisma.Market$ordersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Market$ordersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrderHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  positions<T extends Prisma.Market$positionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Market$positionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PositionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1519,30 +1519,6 @@ export type MarketDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Intern
 }
 
 /**
- * Market.positions
- */
-export type Market$positionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the Position
-   */
-  select?: Prisma.PositionSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the Position
-   */
-  omit?: Prisma.PositionOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.PositionInclude<ExtArgs> | null
-  where?: Prisma.PositionWhereInput
-  orderBy?: Prisma.PositionOrderByWithRelationInput | Prisma.PositionOrderByWithRelationInput[]
-  cursor?: Prisma.PositionWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.PositionScalarFieldEnum | Prisma.PositionScalarFieldEnum[]
-}
-
-/**
  * Market.orders
  */
 export type Market$ordersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1564,6 +1540,30 @@ export type Market$ordersArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   take?: number
   skip?: number
   distinct?: Prisma.OrderHistoryScalarFieldEnum | Prisma.OrderHistoryScalarFieldEnum[]
+}
+
+/**
+ * Market.positions
+ */
+export type Market$positionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Position
+   */
+  select?: Prisma.PositionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Position
+   */
+  omit?: Prisma.PositionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PositionInclude<ExtArgs> | null
+  where?: Prisma.PositionWhereInput
+  orderBy?: Prisma.PositionOrderByWithRelationInput | Prisma.PositionOrderByWithRelationInput[]
+  cursor?: Prisma.PositionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PositionScalarFieldEnum | Prisma.PositionScalarFieldEnum[]
 }
 
 /**

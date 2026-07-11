@@ -60,9 +60,46 @@ type TransferForm = {
   amount: string
 }
 
+type ApiErrorBody = {
+  message?: string
+  debug?: string
+}
+
 const api = axios.create({
   baseURL: 'http://localhost:3000',
 })
+
+api.interceptors.request.use((config) => {
+  const requestId = crypto.randomUUID()
+  config.headers = config.headers ?? {}
+  config.headers['X-Request-Id'] = requestId
+  config.headers['X-Client-Component'] = 'App'
+
+  return config
+})
+
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    console.error('[API error]', {
+      ts: new Date().toISOString(),
+      requestId: error.config?.headers?.['X-Request-Id'],
+      component: 'App',
+      method: error.config?.method,
+      url: error.config?.baseURL ? `${error.config.baseURL}${error.config.url ?? ''}` : error.config?.url,
+      status: error.response?.status,
+      headers: error.response?.headers,
+      responseData: error.response?.data,
+      error: {
+        message: error.message,
+        code: error.code,
+        name: error.name,
+      },
+    })
+
+    return Promise.reject(error)
+  },
+)
 
 const initialTradeForm: TradeForm = {
   side: 'yes',
@@ -132,6 +169,18 @@ function ProgressBar({ value }: { value: number }) {
   )
 }
 
+function getErrorMessage(cause: unknown, fallback: string) {
+  if (axios.isAxiosError<ApiErrorBody>(cause)) {
+    return cause.response?.data?.debug ?? cause.response?.data?.message ?? cause.message ?? fallback
+  }
+
+  if (cause instanceof Error) {
+    return cause.message
+  }
+
+  return fallback
+}
+
 function App() {
   const { claims, signInWithSolana, signInWithGoogle } = useUser()
   const [session, setSession] = useState<Session | null>(null)
@@ -169,7 +218,7 @@ function App() {
           setSelectedMarketId(data.markets[0].id)
         }
       })
-      .catch(() => setError('Unable to load markets'))
+      .catch((cause) => setError(getErrorMessage(cause, 'Unable to load markets')))
   }, [selectedMarketId])
 
   useEffect(() => {
@@ -194,7 +243,7 @@ function App() {
           history: historyResponse.data.history,
         })
       })
-      .catch(() => setError('Unable to load your account data'))
+      .catch((cause) => setError(getErrorMessage(cause, 'Unable to load your account data')))
   }, [session])
 
   const selectedMarket = markets.find((market) => market.id === selectedMarketId) ?? markets[0]
@@ -243,7 +292,7 @@ function App() {
       setStatus(data.message)
       await refreshAccount(headers.Authorization)
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : 'Trade failed')
+      setError(getErrorMessage(cause, 'Trade failed'))
     } finally {
       setBusy('')
     }
@@ -264,7 +313,7 @@ function App() {
       setStatus(data.message)
       await refreshAccount(headers.Authorization)
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : 'Action failed')
+      setError(getErrorMessage(cause, 'Action failed'))
     } finally {
       setBusy('')
     }
@@ -282,7 +331,7 @@ function App() {
       setStatus(`${data.message}: ${usdToCents(data.amount)}`)
       await refreshAccount(headers.Authorization)
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : 'Transfer failed')
+      setError(getErrorMessage(cause, 'Transfer failed'))
     } finally {
       setBusy('')
     }
@@ -308,6 +357,7 @@ function App() {
   const noHoldings = account.positions.filter((position) => position.type === 'NO').reduce((sum, position) => sum + position.qty, 0)
   const activePositions = account.positions.filter((position) => position.qty > 0)
   const recentHistory = [...account.history].sort((a, b) => +new Date(b.createdAt) - +new Date(a.createdAt)).slice(0, 6)
+  const isDemoAccount = session?.user.app_metadata?.provider === 'google'
 
   const marketScore = selectedMarket ? Math.max(0, Math.min(100, Math.round((selectedMarket.totalQty / Math.max(openInterest || 1, 1)) * 100))) : 0
 
@@ -328,7 +378,8 @@ function App() {
           <div className="auth-card__title">Account</div>
           {claims ? (
             <>
-              <div className="auth-line">Signed in as {claims.email ?? 'wallet user'}</div>
+              <div className="auth-line">Signed in as {claims.email ?? (isDemoAccount ? 'demo user' : 'wallet user')}</div>
+              <div className="auth-line">{isDemoAccount ? 'Demo funds are virtual and do not use real money.' : 'Wallet funds map to the real account ledger.'}</div>
               <button className="ghost-button" type="button" onClick={() => supabase.auth.signOut()}>
                 Sign out
               </button>
@@ -542,22 +593,26 @@ function App() {
 
           <div className="panel wallet-panel">
             <div className="section-title-row">
-              <h2>Wallet</h2>
-              <span className="section-pill">Cents-based ledger</span>
+              <h2>{isDemoAccount ? 'Demo wallet' : 'Wallet'}</h2>
+              <span className="section-pill">{isDemoAccount ? 'Virtual funds' : 'Cents-based ledger'}</span>
             </div>
+
+            {isDemoAccount && (
+              <div className="auth-line">Use these demo balances to test trading, split, and merge flows without real money.</div>
+            )}
 
             <div className="wallet-grid">
               <label className="field">
-                <span>Onramp amount</span>
+                <span>{isDemoAccount ? 'Demo top-up amount' : 'Onramp amount'}</span>
                 <input value={transferForm.amount} onChange={(event) => setTransferForm({ amount: event.target.value })} />
               </label>
 
               <div className="wallet-actions">
                 <button className="action-button action-button--secondary" type="button" onClick={() => submitTransfer('/onramp')} disabled={busy === '/onramp'}>
-                  {busy === '/onramp' ? 'Funding...' : 'Onramp'}
+                  {busy === '/onramp' ? 'Funding...' : isDemoAccount ? 'Demo top-up' : 'Onramp'}
                 </button>
                 <button className="action-button action-button--secondary" type="button" onClick={() => submitTransfer('/offramp')} disabled={busy === '/offramp'}>
-                  {busy === '/offramp' ? 'Withdrawing...' : 'Offramp'}
+                  {busy === '/offramp' ? 'Withdrawing...' : isDemoAccount ? 'Demo withdraw' : 'Offramp'}
                 </button>
               </div>
 

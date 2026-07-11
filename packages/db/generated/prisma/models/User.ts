@@ -37,18 +37,21 @@ export type UserSumAggregateOutputType = {
 export type UserMinAggregateOutputType = {
   id: string | null
   address: string | null
+  kind: $Enums.AccountKind | null
   usdBalance: number | null
 }
 
 export type UserMaxAggregateOutputType = {
   id: string | null
   address: string | null
+  kind: $Enums.AccountKind | null
   usdBalance: number | null
 }
 
 export type UserCountAggregateOutputType = {
   id: number
   address: number
+  kind: number
   usdBalance: number
   _all: number
 }
@@ -65,18 +68,21 @@ export type UserSumAggregateInputType = {
 export type UserMinAggregateInputType = {
   id?: true
   address?: true
+  kind?: true
   usdBalance?: true
 }
 
 export type UserMaxAggregateInputType = {
   id?: true
   address?: true
+  kind?: true
   usdBalance?: true
 }
 
 export type UserCountAggregateInputType = {
   id?: true
   address?: true
+  kind?: true
   usdBalance?: true
   _all?: true
 }
@@ -170,6 +176,7 @@ export type UserGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
 export type UserGroupByOutputType = {
   id: string
   address: string
+  kind: $Enums.AccountKind
   usdBalance: number
   _count: UserCountAggregateOutputType | null
   _avg: UserAvgAggregateOutputType | null
@@ -199,17 +206,19 @@ export type UserWhereInput = {
   NOT?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   id?: Prisma.StringFilter<"User"> | string
   address?: Prisma.StringFilter<"User"> | string
+  kind?: Prisma.EnumAccountKindFilter<"User"> | $Enums.AccountKind
   usdBalance?: Prisma.IntFilter<"User"> | number
-  positions?: Prisma.PositionListRelationFilter
   orders?: Prisma.OrderHistoryListRelationFilter
+  positions?: Prisma.PositionListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   address?: Prisma.SortOrder
+  kind?: Prisma.SortOrder
   usdBalance?: Prisma.SortOrder
-  positions?: Prisma.PositionOrderByRelationAggregateInput
   orders?: Prisma.OrderHistoryOrderByRelationAggregateInput
+  positions?: Prisma.PositionOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -218,14 +227,16 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   OR?: Prisma.UserWhereInput[]
   NOT?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
+  kind?: Prisma.EnumAccountKindFilter<"User"> | $Enums.AccountKind
   usdBalance?: Prisma.IntFilter<"User"> | number
-  positions?: Prisma.PositionListRelationFilter
   orders?: Prisma.OrderHistoryListRelationFilter
+  positions?: Prisma.PositionListRelationFilter
 }, "id" | "address">
 
 export type UserOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   address?: Prisma.SortOrder
+  kind?: Prisma.SortOrder
   usdBalance?: Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
   _avg?: Prisma.UserAvgOrderByAggregateInput
@@ -240,62 +251,71 @@ export type UserScalarWhereWithAggregatesInput = {
   NOT?: Prisma.UserScalarWhereWithAggregatesInput | Prisma.UserScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"User"> | string
   address?: Prisma.StringWithAggregatesFilter<"User"> | string
+  kind?: Prisma.EnumAccountKindWithAggregatesFilter<"User"> | $Enums.AccountKind
   usdBalance?: Prisma.IntWithAggregatesFilter<"User"> | number
 }
 
 export type UserCreateInput = {
   id?: string
   address: string
+  kind?: $Enums.AccountKind
   usdBalance?: number
-  positions?: Prisma.PositionCreateNestedManyWithoutUserInput
   orders?: Prisma.OrderHistoryCreateNestedManyWithoutUserInput
+  positions?: Prisma.PositionCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
   id?: string
   address: string
+  kind?: $Enums.AccountKind
   usdBalance?: number
-  positions?: Prisma.PositionUncheckedCreateNestedManyWithoutUserInput
   orders?: Prisma.OrderHistoryUncheckedCreateNestedManyWithoutUserInput
+  positions?: Prisma.PositionUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.StringFieldUpdateOperationsInput | string
+  kind?: Prisma.EnumAccountKindFieldUpdateOperationsInput | $Enums.AccountKind
   usdBalance?: Prisma.IntFieldUpdateOperationsInput | number
-  positions?: Prisma.PositionUpdateManyWithoutUserNestedInput
   orders?: Prisma.OrderHistoryUpdateManyWithoutUserNestedInput
+  positions?: Prisma.PositionUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.StringFieldUpdateOperationsInput | string
+  kind?: Prisma.EnumAccountKindFieldUpdateOperationsInput | $Enums.AccountKind
   usdBalance?: Prisma.IntFieldUpdateOperationsInput | number
-  positions?: Prisma.PositionUncheckedUpdateManyWithoutUserNestedInput
   orders?: Prisma.OrderHistoryUncheckedUpdateManyWithoutUserNestedInput
+  positions?: Prisma.PositionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
   id?: string
   address: string
+  kind?: $Enums.AccountKind
   usdBalance?: number
 }
 
 export type UserUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.StringFieldUpdateOperationsInput | string
+  kind?: Prisma.EnumAccountKindFieldUpdateOperationsInput | $Enums.AccountKind
   usdBalance?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type UserUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.StringFieldUpdateOperationsInput | string
+  kind?: Prisma.EnumAccountKindFieldUpdateOperationsInput | $Enums.AccountKind
   usdBalance?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type UserCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   address?: Prisma.SortOrder
+  kind?: Prisma.SortOrder
   usdBalance?: Prisma.SortOrder
 }
 
@@ -306,12 +326,14 @@ export type UserAvgOrderByAggregateInput = {
 export type UserMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   address?: Prisma.SortOrder
+  kind?: Prisma.SortOrder
   usdBalance?: Prisma.SortOrder
 }
 
 export type UserMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   address?: Prisma.SortOrder
+  kind?: Prisma.SortOrder
   usdBalance?: Prisma.SortOrder
 }
 
@@ -326,6 +348,10 @@ export type UserScalarRelationFilter = {
 
 export type StringFieldUpdateOperationsInput = {
   set?: string
+}
+
+export type EnumAccountKindFieldUpdateOperationsInput = {
+  set?: $Enums.AccountKind
 }
 
 export type IntFieldUpdateOperationsInput = {
@@ -367,6 +393,7 @@ export type UserUpdateOneRequiredWithoutOrdersNestedInput = {
 export type UserCreateWithoutPositionsInput = {
   id?: string
   address: string
+  kind?: $Enums.AccountKind
   usdBalance?: number
   orders?: Prisma.OrderHistoryCreateNestedManyWithoutUserInput
 }
@@ -374,6 +401,7 @@ export type UserCreateWithoutPositionsInput = {
 export type UserUncheckedCreateWithoutPositionsInput = {
   id?: string
   address: string
+  kind?: $Enums.AccountKind
   usdBalance?: number
   orders?: Prisma.OrderHistoryUncheckedCreateNestedManyWithoutUserInput
 }
@@ -397,6 +425,7 @@ export type UserUpdateToOneWithWhereWithoutPositionsInput = {
 export type UserUpdateWithoutPositionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.StringFieldUpdateOperationsInput | string
+  kind?: Prisma.EnumAccountKindFieldUpdateOperationsInput | $Enums.AccountKind
   usdBalance?: Prisma.IntFieldUpdateOperationsInput | number
   orders?: Prisma.OrderHistoryUpdateManyWithoutUserNestedInput
 }
@@ -404,6 +433,7 @@ export type UserUpdateWithoutPositionsInput = {
 export type UserUncheckedUpdateWithoutPositionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.StringFieldUpdateOperationsInput | string
+  kind?: Prisma.EnumAccountKindFieldUpdateOperationsInput | $Enums.AccountKind
   usdBalance?: Prisma.IntFieldUpdateOperationsInput | number
   orders?: Prisma.OrderHistoryUncheckedUpdateManyWithoutUserNestedInput
 }
@@ -411,6 +441,7 @@ export type UserUncheckedUpdateWithoutPositionsInput = {
 export type UserCreateWithoutOrdersInput = {
   id?: string
   address: string
+  kind?: $Enums.AccountKind
   usdBalance?: number
   positions?: Prisma.PositionCreateNestedManyWithoutUserInput
 }
@@ -418,6 +449,7 @@ export type UserCreateWithoutOrdersInput = {
 export type UserUncheckedCreateWithoutOrdersInput = {
   id?: string
   address: string
+  kind?: $Enums.AccountKind
   usdBalance?: number
   positions?: Prisma.PositionUncheckedCreateNestedManyWithoutUserInput
 }
@@ -441,6 +473,7 @@ export type UserUpdateToOneWithWhereWithoutOrdersInput = {
 export type UserUpdateWithoutOrdersInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.StringFieldUpdateOperationsInput | string
+  kind?: Prisma.EnumAccountKindFieldUpdateOperationsInput | $Enums.AccountKind
   usdBalance?: Prisma.IntFieldUpdateOperationsInput | number
   positions?: Prisma.PositionUpdateManyWithoutUserNestedInput
 }
@@ -448,6 +481,7 @@ export type UserUpdateWithoutOrdersInput = {
 export type UserUncheckedUpdateWithoutOrdersInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.StringFieldUpdateOperationsInput | string
+  kind?: Prisma.EnumAccountKindFieldUpdateOperationsInput | $Enums.AccountKind
   usdBalance?: Prisma.IntFieldUpdateOperationsInput | number
   positions?: Prisma.PositionUncheckedUpdateManyWithoutUserNestedInput
 }
@@ -458,13 +492,13 @@ export type UserUncheckedUpdateWithoutOrdersInput = {
  */
 
 export type UserCountOutputType = {
-  positions: number
   orders: number
+  positions: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  positions?: boolean | UserCountOutputTypeCountPositionsArgs
   orders?: boolean | UserCountOutputTypeCountOrdersArgs
+  positions?: boolean | UserCountOutputTypeCountPositionsArgs
 }
 
 /**
@@ -480,49 +514,53 @@ export type UserCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensi
 /**
  * UserCountOutputType without action
  */
-export type UserCountOutputTypeCountPositionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.PositionWhereInput
+export type UserCountOutputTypeCountOrdersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.OrderHistoryWhereInput
 }
 
 /**
  * UserCountOutputType without action
  */
-export type UserCountOutputTypeCountOrdersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.OrderHistoryWhereInput
+export type UserCountOutputTypeCountPositionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PositionWhereInput
 }
 
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   address?: boolean
+  kind?: boolean
   usdBalance?: boolean
-  positions?: boolean | Prisma.User$positionsArgs<ExtArgs>
   orders?: boolean | Prisma.User$ordersArgs<ExtArgs>
+  positions?: boolean | Prisma.User$positionsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   address?: boolean
+  kind?: boolean
   usdBalance?: boolean
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   address?: boolean
+  kind?: boolean
   usdBalance?: boolean
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectScalar = {
   id?: boolean
   address?: boolean
+  kind?: boolean
   usdBalance?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "address" | "usdBalance", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "address" | "kind" | "usdBalance", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  positions?: boolean | Prisma.User$positionsArgs<ExtArgs>
   orders?: boolean | Prisma.User$ordersArgs<ExtArgs>
+  positions?: boolean | Prisma.User$positionsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -531,12 +569,13 @@ export type UserIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
 export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "User"
   objects: {
-    positions: Prisma.$PositionPayload<ExtArgs>[]
     orders: Prisma.$OrderHistoryPayload<ExtArgs>[]
+    positions: Prisma.$PositionPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     address: string
+    kind: $Enums.AccountKind
     usdBalance: number
   }, ExtArgs["result"]["user"]>
   composites: {}
@@ -932,8 +971,8 @@ readonly fields: UserFieldRefs;
  */
 export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  positions<T extends Prisma.User$positionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$positionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PositionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   orders<T extends Prisma.User$ordersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$ordersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrderHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  positions<T extends Prisma.User$positionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$positionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PositionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -965,6 +1004,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
 export interface UserFieldRefs {
   readonly id: Prisma.FieldRef<"User", 'String'>
   readonly address: Prisma.FieldRef<"User", 'String'>
+  readonly kind: Prisma.FieldRef<"User", 'AccountKind'>
   readonly usdBalance: Prisma.FieldRef<"User", 'Int'>
 }
     
@@ -1359,30 +1399,6 @@ export type UserDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Internal
 }
 
 /**
- * User.positions
- */
-export type User$positionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the Position
-   */
-  select?: Prisma.PositionSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the Position
-   */
-  omit?: Prisma.PositionOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.PositionInclude<ExtArgs> | null
-  where?: Prisma.PositionWhereInput
-  orderBy?: Prisma.PositionOrderByWithRelationInput | Prisma.PositionOrderByWithRelationInput[]
-  cursor?: Prisma.PositionWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.PositionScalarFieldEnum | Prisma.PositionScalarFieldEnum[]
-}
-
-/**
  * User.orders
  */
 export type User$ordersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1404,6 +1420,30 @@ export type User$ordersArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
   take?: number
   skip?: number
   distinct?: Prisma.OrderHistoryScalarFieldEnum | Prisma.OrderHistoryScalarFieldEnum[]
+}
+
+/**
+ * User.positions
+ */
+export type User$positionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Position
+   */
+  select?: Prisma.PositionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Position
+   */
+  omit?: Prisma.PositionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PositionInclude<ExtArgs> | null
+  where?: Prisma.PositionWhereInput
+  orderBy?: Prisma.PositionOrderByWithRelationInput | Prisma.PositionOrderByWithRelationInput[]
+  cursor?: Prisma.PositionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PositionScalarFieldEnum | Prisma.PositionScalarFieldEnum[]
 }
 
 /**

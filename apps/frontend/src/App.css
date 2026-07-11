@@ -3,8 +3,8 @@
   display: grid;
   grid-template-columns: 360px minmax(0, 1fr);
   min-height: 100vh;
-  gap: 24px;
-  padding: 24px;
+  gap: 22px;
+  padding: 22px;
   color: var(--text);
   z-index: 0;
 }
@@ -23,7 +23,7 @@
   right: -8rem;
   width: 28rem;
   height: 28rem;
-  background: radial-gradient(circle, rgba(36, 204, 166, 0.18), transparent 68%);
+  background: radial-gradient(circle, rgba(76, 141, 255, 0.16), transparent 68%);
 }
 
 .app-shell::after {
@@ -31,7 +31,7 @@
   left: -8rem;
   width: 30rem;
   height: 30rem;
-  background: radial-gradient(circle, rgba(73, 97, 255, 0.16), transparent 68%);
+  background: radial-gradient(circle, rgba(46, 203, 112, 0.12), transparent 68%);
 }
 
 .sidebar,
@@ -63,7 +63,7 @@
   padding: 22px;
   border-radius: 24px;
   background:
-    linear-gradient(180deg, rgba(15, 23, 42, 0.96), rgba(10, 14, 28, 0.9)),
+    linear-gradient(180deg, rgba(13, 19, 26, 0.98), rgba(8, 12, 16, 0.94)),
     var(--panel-bg);
 }
 
@@ -79,7 +79,7 @@
   align-items: center;
   gap: 8px;
   font-size: 0.72rem;
-  font-weight: 700;
+  font-weight: 800;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--accent);
@@ -90,7 +90,7 @@
 .panel h2 {
   margin: 10px 0 0;
   color: var(--text-strong);
-  letter-spacing: -0.04em;
+  letter-spacing: -0.05em;
   line-height: 1.02;
 }
 
@@ -152,21 +152,22 @@
   min-height: 46px;
   padding: 0 16px;
   font: inherit;
-  font-weight: 650;
+  font-weight: 700;
   letter-spacing: -0.01em;
   cursor: pointer;
   transition:
     transform 160ms ease,
     background 160ms ease,
     border-color 160ms ease,
-    box-shadow 160ms ease;
+    box-shadow 160ms ease,
+    color 160ms ease;
 }
 
 .primary-button,
 .action-button {
-  color: #031317;
-  background: linear-gradient(135deg, #39e6b0, #8ef3d2);
-  box-shadow: 0 12px 30px rgba(57, 230, 176, 0.24);
+  color: #04120b;
+  background: linear-gradient(135deg, #2ecb70, #8af0b0);
+  box-shadow: 0 12px 30px rgba(46, 203, 112, 0.22);
 }
 
 .ghost-button,
@@ -190,18 +191,18 @@
 }
 
 .toggle-button--active {
-  background: linear-gradient(135deg, rgba(57, 230, 176, 0.18), rgba(95, 116, 255, 0.18));
-  border-color: rgba(57, 230, 176, 0.4);
+  background: linear-gradient(135deg, rgba(46, 203, 112, 0.16), rgba(76, 141, 255, 0.16));
+  border-color: rgba(46, 203, 112, 0.4);
 }
 
 .toggle-button--yes.toggle-button--active {
-  border-color: rgba(57, 230, 176, 0.45);
-  box-shadow: inset 0 0 0 1px rgba(57, 230, 176, 0.15);
+  border-color: rgba(46, 203, 112, 0.48);
+  box-shadow: inset 0 0 0 1px rgba(46, 203, 112, 0.14);
 }
 
 .toggle-button--no.toggle-button--active {
-  border-color: rgba(255, 114, 132, 0.45);
-  box-shadow: inset 0 0 0 1px rgba(255, 114, 132, 0.15);
+  border-color: rgba(240, 82, 82, 0.48);
+  box-shadow: inset 0 0 0 1px rgba(240, 82, 82, 0.14);
 }
 
 .stats-grid {
@@ -273,9 +274,9 @@
 }
 
 .market-card--active {
-  border-color: rgba(57, 230, 176, 0.45);
+  border-color: rgba(46, 203, 112, 0.45);
   box-shadow:
-    0 0 0 1px rgba(57, 230, 176, 0.18),
+    0 0 0 1px rgba(46, 203, 112, 0.16),
     var(--shadow-lg);
 }
 
@@ -284,8 +285,6 @@
 .table-row,
 .summary-strip,
 .ticket-summary,
-.hero-card,
-.market-card__top,
 .history-meta {
   display: flex;
   align-items: center;
@@ -316,8 +315,8 @@
   gap: 18px;
   min-height: 170px;
   background:
-    radial-gradient(circle at top right, rgba(57, 230, 176, 0.14), transparent 40%),
-    radial-gradient(circle at bottom left, rgba(95, 116, 255, 0.12), transparent 32%),
+    radial-gradient(circle at top right, rgba(46, 203, 112, 0.14), transparent 40%),
+    radial-gradient(circle at bottom left, rgba(76, 141, 255, 0.12), transparent 32%),
     var(--panel-bg);
 }
 
@@ -437,8 +436,8 @@
 }
 
 .field input:focus {
-  border-color: rgba(57, 230, 176, 0.5);
-  box-shadow: 0 0 0 3px rgba(57, 230, 176, 0.1);
+  border-color: rgba(46, 203, 112, 0.5);
+  box-shadow: 0 0 0 3px rgba(46, 203, 112, 0.1);
 }
 
 .ticket-summary,
@@ -479,7 +478,7 @@
 .progress-fill {
   height: 100%;
   border-radius: inherit;
-  background: linear-gradient(90deg, #39e6b0, #5f74ff);
+  background: linear-gradient(90deg, #2ecb70, #4c8dff);
 }
 
 .toast {
@@ -494,8 +493,8 @@
 }
 
 .toast--error {
-  border-color: rgba(255, 114, 132, 0.5);
-  background: rgba(255, 114, 132, 0.12);
+  border-color: rgba(240, 82, 82, 0.5);
+  background: rgba(240, 82, 82, 0.12);
 }
 
 @media (max-width: 1280px) {
@@ -518,16 +517,32 @@
     padding: 18px;
   }
 
-  .hero-card {
+  .stats-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .hero-card,
+  .section-title-row,
+  .market-card__top,
+  .summary-strip,
+  .ticket-summary {
     flex-direction: column;
+    align-items: flex-start;
   }
 
-  .hero-card__metrics {
-    width: 100%;
-    min-width: 0;
-  }
-
+  .hero-card__metrics,
   .orderbook-grid {
     grid-template-columns: 1fr;
+    min-width: 0;
+  }
+}
+
+@media (max-width: 640px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .brand-block h1 {
+    font-size: 2.5rem;
   }
 }

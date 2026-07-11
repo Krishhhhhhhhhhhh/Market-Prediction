@@ -236,8 +236,8 @@ export type OrderHistoryWhereInput = {
   userId?: Prisma.StringFilter<"OrderHistory"> | string
   marketId?: Prisma.StringFilter<"OrderHistory"> | string
   createdAt?: Prisma.DateTimeFilter<"OrderHistory"> | Date | string
-  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   market?: Prisma.XOR<Prisma.MarketScalarRelationFilter, Prisma.MarketWhereInput>
+  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
 
 export type OrderHistoryOrderByWithRelationInput = {
@@ -248,8 +248,8 @@ export type OrderHistoryOrderByWithRelationInput = {
   userId?: Prisma.SortOrder
   marketId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
-  user?: Prisma.UserOrderByWithRelationInput
   market?: Prisma.MarketOrderByWithRelationInput
+  user?: Prisma.UserOrderByWithRelationInput
 }
 
 export type OrderHistoryWhereUniqueInput = Prisma.AtLeast<{
@@ -263,8 +263,8 @@ export type OrderHistoryWhereUniqueInput = Prisma.AtLeast<{
   userId?: Prisma.StringFilter<"OrderHistory"> | string
   marketId?: Prisma.StringFilter<"OrderHistory"> | string
   createdAt?: Prisma.DateTimeFilter<"OrderHistory"> | Date | string
-  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   market?: Prisma.XOR<Prisma.MarketScalarRelationFilter, Prisma.MarketWhereInput>
+  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }, "id">
 
 export type OrderHistoryOrderByWithAggregationInput = {
@@ -301,8 +301,8 @@ export type OrderHistoryCreateInput = {
   qty: number
   price: number
   createdAt?: Date | string
-  user: Prisma.UserCreateNestedOneWithoutOrdersInput
   market: Prisma.MarketCreateNestedOneWithoutOrdersInput
+  user: Prisma.UserCreateNestedOneWithoutOrdersInput
 }
 
 export type OrderHistoryUncheckedCreateInput = {
@@ -321,8 +321,8 @@ export type OrderHistoryUpdateInput = {
   qty?: Prisma.IntFieldUpdateOperationsInput | number
   price?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  user?: Prisma.UserUpdateOneRequiredWithoutOrdersNestedInput
   market?: Prisma.MarketUpdateOneRequiredWithoutOrdersNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutOrdersNestedInput
 }
 
 export type OrderHistoryUncheckedUpdateInput = {
@@ -688,8 +688,8 @@ export type OrderHistorySelect<ExtArgs extends runtime.Types.Extensions.Internal
   userId?: boolean
   marketId?: boolean
   createdAt?: boolean
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   market?: boolean | Prisma.MarketDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["orderHistory"]>
 
 export type OrderHistorySelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -700,8 +700,8 @@ export type OrderHistorySelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   userId?: boolean
   marketId?: boolean
   createdAt?: boolean
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   market?: boolean | Prisma.MarketDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["orderHistory"]>
 
 export type OrderHistorySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -712,8 +712,8 @@ export type OrderHistorySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   userId?: boolean
   marketId?: boolean
   createdAt?: boolean
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   market?: boolean | Prisma.MarketDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["orderHistory"]>
 
 export type OrderHistorySelectScalar = {
@@ -728,23 +728,23 @@ export type OrderHistorySelectScalar = {
 
 export type OrderHistoryOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "orderType" | "qty" | "price" | "userId" | "marketId" | "createdAt", ExtArgs["result"]["orderHistory"]>
 export type OrderHistoryInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   market?: boolean | Prisma.MarketDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 export type OrderHistoryIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   market?: boolean | Prisma.MarketDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 export type OrderHistoryIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   market?: boolean | Prisma.MarketDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 
 export type $OrderHistoryPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "OrderHistory"
   objects: {
-    user: Prisma.$UserPayload<ExtArgs>
     market: Prisma.$MarketPayload<ExtArgs>
+    user: Prisma.$UserPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1148,8 +1148,8 @@ readonly fields: OrderHistoryFieldRefs;
  */
 export interface Prisma__OrderHistoryClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   market<T extends Prisma.MarketDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MarketDefaultArgs<ExtArgs>>): Prisma.Prisma__MarketClient<runtime.Types.Result.GetResult<Prisma.$MarketPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.

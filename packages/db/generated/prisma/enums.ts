@@ -25,3 +25,11 @@ export const PositionType = {
 } as const
 
 export type PositionType = (typeof PositionType)[keyof typeof PositionType]
+
+
+export const AccountKind = {
+  REAL: 'REAL',
+  DEMO: 'DEMO'
+} as const
+
+export type AccountKind = (typeof AccountKind)[keyof typeof AccountKind]

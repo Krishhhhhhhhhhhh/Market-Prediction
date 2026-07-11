@@ -216,8 +216,8 @@ export type PositionWhereInput = {
   marketId?: Prisma.StringFilter<"Position"> | string
   type?: Prisma.EnumPositionTypeFilter<"Position"> | $Enums.PositionType
   qty?: Prisma.IntFilter<"Position"> | number
-  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   market?: Prisma.XOR<Prisma.MarketScalarRelationFilter, Prisma.MarketWhereInput>
+  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
 
 export type PositionOrderByWithRelationInput = {
@@ -226,8 +226,8 @@ export type PositionOrderByWithRelationInput = {
   marketId?: Prisma.SortOrder
   type?: Prisma.SortOrder
   qty?: Prisma.SortOrder
-  user?: Prisma.UserOrderByWithRelationInput
   market?: Prisma.MarketOrderByWithRelationInput
+  user?: Prisma.UserOrderByWithRelationInput
 }
 
 export type PositionWhereUniqueInput = Prisma.AtLeast<{
@@ -240,8 +240,8 @@ export type PositionWhereUniqueInput = Prisma.AtLeast<{
   marketId?: Prisma.StringFilter<"Position"> | string
   type?: Prisma.EnumPositionTypeFilter<"Position"> | $Enums.PositionType
   qty?: Prisma.IntFilter<"Position"> | number
-  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   market?: Prisma.XOR<Prisma.MarketScalarRelationFilter, Prisma.MarketWhereInput>
+  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }, "id" | "userId_marketId_type">
 
 export type PositionOrderByWithAggregationInput = {
@@ -272,8 +272,8 @@ export type PositionCreateInput = {
   id?: string
   type: $Enums.PositionType
   qty: number
-  user: Prisma.UserCreateNestedOneWithoutPositionsInput
   market: Prisma.MarketCreateNestedOneWithoutPositionsInput
+  user: Prisma.UserCreateNestedOneWithoutPositionsInput
 }
 
 export type PositionUncheckedCreateInput = {
@@ -288,8 +288,8 @@ export type PositionUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumPositionTypeFieldUpdateOperationsInput | $Enums.PositionType
   qty?: Prisma.IntFieldUpdateOperationsInput | number
-  user?: Prisma.UserUpdateOneRequiredWithoutPositionsNestedInput
   market?: Prisma.MarketUpdateOneRequiredWithoutPositionsNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutPositionsNestedInput
 }
 
 export type PositionUncheckedUpdateInput = {
@@ -613,8 +613,8 @@ export type PositionSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   marketId?: boolean
   type?: boolean
   qty?: boolean
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   market?: boolean | Prisma.MarketDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["position"]>
 
 export type PositionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -623,8 +623,8 @@ export type PositionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   marketId?: boolean
   type?: boolean
   qty?: boolean
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   market?: boolean | Prisma.MarketDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["position"]>
 
 export type PositionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -633,8 +633,8 @@ export type PositionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   marketId?: boolean
   type?: boolean
   qty?: boolean
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   market?: boolean | Prisma.MarketDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["position"]>
 
 export type PositionSelectScalar = {
@@ -647,23 +647,23 @@ export type PositionSelectScalar = {
 
 export type PositionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "marketId" | "type" | "qty", ExtArgs["result"]["position"]>
 export type PositionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   market?: boolean | Prisma.MarketDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 export type PositionIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   market?: boolean | Prisma.MarketDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 export type PositionIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   market?: boolean | Prisma.MarketDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 
 export type $PositionPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Position"
   objects: {
-    user: Prisma.$UserPayload<ExtArgs>
     market: Prisma.$MarketPayload<ExtArgs>
+    user: Prisma.$UserPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1065,8 +1065,8 @@ readonly fields: PositionFieldRefs;
  */
 export interface Prisma__PositionClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   market<T extends Prisma.MarketDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MarketDefaultArgs<ExtArgs>>): Prisma.Prisma__MarketClient<runtime.Types.Result.GetResult<Prisma.$MarketPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.

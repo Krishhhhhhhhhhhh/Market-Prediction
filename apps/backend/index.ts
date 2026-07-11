@@ -2,8 +2,10 @@ import express from "express";
 import cors from "cors";
 import crypto from "crypto";
 import { middleware } from "./middleware";
-import { prisma } from "db";
+import * as db from "db";
 import { TradeSchema, SplitMergeSchema, OnrampSchema, OfframpSchema, type BookOrder } from "./types";
+
+const { prisma, logError, runWithRequestContext } = db;
 
 declare global {
   namespace Express {
@@ -22,6 +24,27 @@ class AppError extends Error {
 const app = express();
 app.use(express.json());
 app.use(cors());
+
+app.use((req, res, next) => {
+  const requestId = String(req.headers["x-request-id"] ?? crypto.randomUUID());
+  const startedAt = performance.now();
+
+  res.setHeader("x-request-id", requestId);
+
+  runWithRequestContext(
+    {
+      requestId,
+      method: req.method,
+      url: req.originalUrl,
+      startedAt,
+      component: String(req.headers["x-client-component"] ?? "unknown"),
+      user: undefined,
+    },
+    () => {
+      next();
+    },
+  );
+});
 
 // $1 = 100 cents. A split mints 1 YES + 1 NO share per pair; a merge
 // burns 1 YES + 1 NO share per pair and pays out $1 per pair. All
@@ -47,6 +70,7 @@ async function executeTrade(req: express.Request, res: express.Response, type: "
   const { success, data } = TradeSchema.safeParse(req.body);
   if (!success) return res.status(400).json({ message: "Invalid input" });
 
+
   const originalOrderId = crypto.randomUUID();
   const positionType = data.side === "yes" ? "YES" : "NO";
 
@@ -55,19 +79,28 @@ async function executeTrade(req: express.Request, res: express.Response, type: "
       const [market] = await tx.$queryRaw<{ id: string; yesOrderbook: unknown; noOrderbook: unknown }[]>`
         SELECT id, "yesOrderbook", "noOrderbook" FROM "Market" WHERE id = ${data.marketId} FOR UPDATE
       `;
-      if (!market) throw new AppError("Market not found", 404);
+      if (!market) {
+        logError("service.executeTrade.market.missing", { marketId: data.marketId });
+        throw new AppError("Market not found", 404);
+      }
 
       const [user] = await tx.$queryRaw<{ id: string; usdBalance: number }[]>`
         SELECT id, "usdBalance" FROM "User" WHERE id = ${req.userId} FOR UPDATE
       `;
-      if (!user) throw new AppError("User not found", 404);
+      if (!user) {
+        logError("service.executeTrade.user.missing", { userId: req.userId });
+        throw new AppError("User not found", 404);
+      }
 
       let book = parseBook(data.side === "yes" ? market.yesOrderbook : market.noOrderbook);
       let leftQty = data.qty;
 
       if (type === "buy") {
         const reserve = data.qty * data.price;
-        if (user.usdBalance < reserve) throw new AppError("Insufficient balance", 400);
+        if (user.usdBalance < reserve) {
+          logError("service.executeTrade.insufficientBalance", { userId: req.userId, available: user.usdBalance, reserve });
+          throw new AppError("Insufficient balance", 400);
+        }
         await tx.user.update({ where: { id: req.userId }, data: { usdBalance: { decrement: reserve } } });
 
         const asks = book
@@ -116,7 +149,10 @@ async function executeTrade(req: express.Request, res: express.Response, type: "
           WHERE "userId" = ${req.userId} AND "marketId" = ${data.marketId} AND "type" = ${positionType}::"PositionType"
           FOR UPDATE
         `;
-        if (!positionLock || positionLock.qty < data.qty) throw new AppError("Insufficient position", 400);
+        if (!positionLock || positionLock.qty < data.qty) {
+          logError("service.executeTrade.insufficientPosition", { userId: req.userId, marketId: data.marketId, heldQty: positionLock?.qty ?? null, requestedQty: data.qty });
+          throw new AppError("Insufficient position", 400);
+        }
 
         await tx.position.update({
           where: { userId_marketId_type: { userId: req.userId, marketId: data.marketId, type: positionType } },
@@ -169,16 +205,21 @@ async function executeTrade(req: express.Request, res: express.Response, type: "
       });
     });
 
+
     return res.json({ message: "Order executed", orderId: originalOrderId });
   } catch (e) {
     if (e instanceof AppError) return res.status(e.statusCode).json({ message: e.message });
-    console.error(e);
+    logError("controller.executeTrade.exception", { type, userId: req.userId, errorMessage: e instanceof Error ? e.message : String(e), stack: e instanceof Error ? e.stack : undefined });
     return res.status(500).json({ message: "Internal server error" });
   }
 }
 
-app.post("/buy", middleware, (req, res) => executeTrade(req, res, "buy"));
-app.post("/sell", middleware, (req, res) => executeTrade(req, res, "sell"));
+app.post("/buy", middleware, (req, res) => {
+  return executeTrade(req, res, "buy");
+});
+app.post("/sell", middleware, (req, res) => {
+  return executeTrade(req, res, "sell");
+});
 
 app.post("/split", middleware, async (req, res) => {
   if (!req.userId) return res.status(401).json({ message: "Unauthorized" });
@@ -190,10 +231,16 @@ app.post("/split", middleware, async (req, res) => {
       const [user] = await tx.$queryRaw<{ id: string; usdBalance: number }[]>`
         SELECT id, "usdBalance" FROM "User" WHERE id = ${req.userId} FOR UPDATE
       `;
-      if (!user) throw new AppError("User not found", 404);
+      if (!user) {
+        logError("service.split.user.missing", { userId: req.userId });
+        throw new AppError("User not found", 404);
+      }
 
       const cost = data.qty * PRICE_SCALE;
-      if (user.usdBalance < cost) throw new AppError("Insufficient balance", 400);
+      if (user.usdBalance < cost) {
+        logError("service.split.insufficientBalance", { userId: req.userId, available: user.usdBalance, cost });
+        throw new AppError("Insufficient balance", 400);
+      }
 
       await tx.user.update({ where: { id: req.userId }, data: { usdBalance: { decrement: cost } } });
 
@@ -213,7 +260,7 @@ app.post("/split", middleware, async (req, res) => {
     return res.json({ message: "Split successful" });
   } catch (e) {
     if (e instanceof AppError) return res.status(e.statusCode).json({ message: e.message });
-    console.error(e);
+    logError("route.split.exception", { userId: req.userId, errorMessage: e instanceof Error ? e.message : String(e), stack: e instanceof Error ? e.stack : undefined });
     return res.status(500).json({ message: "Internal server error" });
   }
 });
@@ -233,7 +280,14 @@ app.post("/merge", middleware, async (req, res) => {
       `;
 
       if (!yesPos || yesPos.qty < data.qty) throw new AppError("Insufficient YES position", 400);
-      if (!noPos || noPos.qty < data.qty) throw new AppError("Insufficient NO position", 400);
+      if (!yesPos || yesPos.qty < data.qty) {
+        logError("service.merge.insufficientYesPosition", { userId: req.userId, marketId: data.marketId, heldQty: yesPos?.qty ?? null, requestedQty: data.qty });
+        throw new AppError("Insufficient YES position", 400);
+      }
+      if (!noPos || noPos.qty < data.qty) {
+        logError("service.merge.insufficientNoPosition", { userId: req.userId, marketId: data.marketId, heldQty: noPos?.qty ?? null, requestedQty: data.qty });
+        throw new AppError("Insufficient NO position", 400);
+      }
 
       await tx.position.update({
         where: { userId_marketId_type: { userId: req.userId, marketId: data.marketId, type: "YES" } },
@@ -255,7 +309,7 @@ app.post("/merge", middleware, async (req, res) => {
     return res.json({ message: "Merge successful" });
   } catch (e) {
     if (e instanceof AppError) return res.status(e.statusCode).json({ message: e.message });
-    console.error(e);
+    logError("route.merge.exception", { userId: req.userId, errorMessage: e instanceof Error ? e.message : String(e), stack: e instanceof Error ? e.stack : undefined });
     return res.status(500).json({ message: "Internal server error" });
   }
 });
@@ -272,7 +326,10 @@ app.post("/onramp", middleware, async (req, res) => {
       const [user] = await tx.$queryRaw<{ id: string }[]>`
         SELECT id FROM "User" WHERE id = ${req.userId} FOR UPDATE
       `;
-      if (!user) throw new AppError("User not found", 404);
+      if (!user) {
+        logError("service.onramp.user.missing", { userId: req.userId });
+        throw new AppError("User not found", 404);
+      }
 
       await tx.user.update({ where: { id: req.userId }, data: { usdBalance: { increment: amountInCents } } });
     });
@@ -280,7 +337,7 @@ app.post("/onramp", middleware, async (req, res) => {
     return res.json({ message: "Onramp successful", amount: data.amount });
   } catch (e) {
     if (e instanceof AppError) return res.status(e.statusCode).json({ message: e.message });
-    console.error(e);
+    logError("route.onramp.exception", { userId: req.userId, errorMessage: e instanceof Error ? e.message : String(e), stack: e instanceof Error ? e.stack : undefined });
     return res.status(500).json({ message: "Internal server error" });
   }
 });
@@ -297,8 +354,14 @@ app.post("/offramp", middleware, async (req, res) => {
       const [user] = await tx.$queryRaw<{ id: string; usdBalance: number }[]>`
         SELECT id, "usdBalance" FROM "User" WHERE id = ${req.userId} FOR UPDATE
       `;
-      if (!user) throw new AppError("User not found", 404);
-      if (user.usdBalance < amountInCents) throw new AppError("Insufficient balance", 400);
+      if (!user) {
+        logError("service.offramp.user.missing", { userId: req.userId });
+        throw new AppError("User not found", 404);
+      }
+      if (user.usdBalance < amountInCents) {
+        logError("service.offramp.insufficientBalance", { userId: req.userId, available: user.usdBalance, amountInCents });
+        throw new AppError("Insufficient balance", 400);
+      }
 
       await tx.user.update({ where: { id: req.userId }, data: { usdBalance: { decrement: amountInCents } } });
     });
@@ -306,7 +369,7 @@ app.post("/offramp", middleware, async (req, res) => {
     return res.json({ message: "Offramp successful", amount: data.amount });
   } catch (e) {
     if (e instanceof AppError) return res.status(e.statusCode).json({ message: e.message });
-    console.error(e);
+    logError("route.offramp.exception", { userId: req.userId, errorMessage: e instanceof Error ? e.message : String(e), stack: e instanceof Error ? e.stack : undefined });
     return res.status(500).json({ message: "Internal server error" });
   }
 });

@@ -745,6 +745,7 @@ export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof
 export const UserScalarFieldEnum = {
   id: 'id',
   address: 'address',
+  kind: 'kind',
   usdBalance: 'usdBalance'
 } as const
 
@@ -846,6 +847,20 @@ export type StringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 
  * Reference to a field of type 'String[]'
  */
 export type ListStringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'String[]'>
+    
+
+
+/**
+ * Reference to a field of type 'AccountKind'
+ */
+export type EnumAccountKindFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AccountKind'>
+    
+
+
+/**
+ * Reference to a field of type 'AccountKind[]'
+ */
+export type ListEnumAccountKindFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AccountKind[]'>
     
 
 
